@@ -1,0 +1,6 @@
+F:\a\샌즈어\샌즈어\obj\Debug\샌즈어.csprojResolveAssemblyReference.cache
+F:\a\샌즈어\샌즈어\bin\Debug\샌즈어.exe.config
+F:\a\샌즈어\샌즈어\bin\Debug\샌즈어.exe
+F:\a\샌즈어\샌즈어\bin\Debug\샌즈어.pdb
+F:\a\샌즈어\샌즈어\obj\Debug\샌즈어.exe
+F:\a\샌즈어\샌즈어\obj\Debug\샌즈어.pdb
