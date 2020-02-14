@@ -15,8 +15,10 @@ namespace 샌즈어
 	//  참고로("출력할 내용")
 	//  참고로("출력할 내용")습니다  (다음줄로 넘어감)
 	
+	//만들예정인거
+	
 	//변수
-	//	정수형 - '변수이름'은 '정수'번째 공격을 맞고 죽습니다
+	//	정수형 - 샌즈의 공격은 '변수이름'당 '정수'이 답니다
 	//	문자열 - 샌즈는 '문자열'한 '변수이름'공격을 가지고 있습니다
 	
 	//조건문
@@ -54,7 +56,7 @@ namespace 샌즈어
 		
 		public static void Main(string[] args)
 		{
-			variables1 var = new variables1();
+			intVariables1 intVar = new intVariables1();
 			Console.WriteLine("실행시킬 파일 위치를 입력해주세요.");
 			//lines = File.ReadAllLines(Console.ReadLine());
 			for(int a = 0; a < lines.Length; a++){
@@ -72,9 +74,11 @@ namespace 샌즈어
 						a = lineOver(a);
 					}
 				}
-				else if(lines[a].Contains("번째 공격을 맞고 죽습니다")){
-					Array.Resize(ref var.intVariables, var.intVariables.Length + 1);
-					Array.Resize(ref var.stringVariables, var.stringVariables.Length + 1);
+				else if(lines[a].Contains("샌즈의 공격은") && lines[a].Contains("이 답니다")){
+					Array.Resize(ref intVar.intVariables, intVar.intVariables.Length + 1);
+					Array.Resize(ref intVar.stringVariables, intVar.stringVariables.Length + 1);
+					Console.WriteLine(intVar.stringVariables.Length + " " + intVar.intVariables);
+					intVariableDeclaration(lines[a], intVar);
 				}
 				else if(lines[a].Contains("자신의 턴을") && lines[a].Contains("동안 유지한채로 잠에듭니다")){
 					
@@ -83,11 +87,22 @@ namespace 샌즈어
 			Console.ReadKey();
 		}
 		
-		public struct variables1{
+		public struct intVariables1{
 			public string[] stringVariables;
 			public int[] intVariables;
 		}
 		
+		static void intVariableDeclaration(string line, intVariables1 intVar){ // 정수형 - 샌즈의 공격은 '변수이름'당 '정수'이 답니다
+			int varNamePoint1 = line.IndexOf("샌즈의 공격은 ") + 8;
+			int varNamePoint2 = line.LastIndexOf("당 ");
+			int varValuePoint1 = line.LastIndexOf("이 답니다");
+			
+			string varName = line.Substring(varNamePoint1, varNamePoint2 - varNamePoint1);
+			int varValue = int.Parse(line.Substring(varNamePoint2 + 2, varValuePoint1 - (varNamePoint2 + 2)));
+			
+			intVar.stringVariables[intVar.stringVariables.Length] = varName;
+			intVar.intVariables[intVar.intVariables.Length] = varValue;
+		}
 		static int lineOver(int point){
 			int newPoint = point;
 			for(int a = point; a < lines.Length; a++){
