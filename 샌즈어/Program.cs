@@ -8,6 +8,7 @@
  */
 using System;
 using System.IO;
+
 namespace 샌즈어
 {
 	//출력
@@ -52,24 +53,34 @@ namespace 샌즈어
 		public static void Main(string[] args)
 		{
 			Console.WriteLine("실행시킬 파일 위치를 입력해주세요.");
-			string[] lines = File.ReadAllLines(Console.ReadLine());
-			for(int a = 0; lines[a] == null; a++){
+			//string[] lines = File.ReadAllLines(Console.ReadLine());
+			string[] lines = {"참고로(\"피하지만\")", "참고로(\"샌즈 아시는구나\")습니다"};
+			for(int a = 0; a < lines.Length; a++){
 				if(lines[a].Contains("참고로")){
 					if(lines[a].Contains("습니다")){
-						
+						print(lines[a], true);
 					}
 					else{
-						
+						print(lines[a]);
 					}
 				}
 				else if(lines[a].Contains("참고로")){
 					
 				}
 			}
+			Console.ReadKey();
 		}
 		
 		static void print(string line, bool linebreak = false){
+			int start = line.IndexOf("참고로(\"") + 5;
+			int end = (line.IndexOf("\")")) - start;
+			string printStr  = line.Substring(start, end);
 			
+			Console.Write(printStr);
+			
+			if(linebreak == true){
+				Console.Write("\n");
+			}
 		}
 	}
 }
