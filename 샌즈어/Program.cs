@@ -58,10 +58,16 @@ namespace 샌즈어
 								 "하지만 잠이 들었을때 창을 옮겨서 (테스트,테스트2)을 시도하고 1차공격은",
 								 "{",
 								 "참고로(\"샌즈 아시는구나\")습니다",
-								 "}",};
+								 "}",
+								 "자신의 턴을 3동안 유지한채로 잠에듭니다",
+								 "[",
+								 "참고로(\"반복중\")습니다",
+								 "]"};
 		public static Hashtable intHt = new Hashtable();
 		public static Hashtable strHt = new Hashtable();
-			
+		public static int numberOfRepetitions = 0;
+		public static int BackPoint = 0;
+		
 		public static void Main(string[] args)
 		{
 			Console.WriteLine("실행시킬 파일 위치를 입력해주세요.");
@@ -91,7 +97,12 @@ namespace 샌즈어
 					stringVariableDeclaration(lines[a]);
 				}
 				else if(lines[a].Contains("자신의 턴을") && lines[a].Contains("동안 유지한채로 잠에듭니다")){
-					
+					repetition(lines[a], a);
+				}
+				
+				if(lines[a].Contains("]") && numberOfRepetitions != 0){
+					numberOfRepetitions--;
+					a = BackPoint;
 				}
 			}
 			Console.ReadKey();
@@ -161,11 +172,33 @@ namespace 샌즈어
 			}
 		}
 		
-		static void repetition(string line){
-			
+		static void repetition(string line, int point){ // 자신의 턴을 '정수'동안 유지한채로 잠에듭니다
+			int start = line.IndexOf("자신의 턴을 ") + 7;
+			int end = (line.IndexOf("동안 유지한채로 잠에듭니다")) - start;
+			int repetitionNumber = 0;
+			try{
+				repetitionNumber = int.Parse(line.Substring(start, end));
+			}
+			catch{
+				Console.WriteLine(line.Substring(start, end) + "은 정수가 아닙니다.");
+				return;
+			}
+			numberOfRepetitions = repetitionNumber - 1;
+			BackPoint = findBracket(point);
 		}
 		
-		static bool condition(string line){ // 하지만 잠이 들었을때 창을 옮겨서 (변수1,변수2)을 시도하고 1차공격은
+		static int findBracket(int point){
+			int newPoint = point;
+			for(int a = point; a < lines.Length; a++){
+				if(lines[a].Contains("[")){
+					newPoint = a;
+					break;
+				}
+			}
+			return newPoint;
+		}
+		
+		static bool condition(string line){
 			int start = line.IndexOf("하지만 잠이 들었을때 창을 옮겨서 (") + 20;
 			int end = (line.IndexOf(",")) - start;
 			string var1Name = line.Substring(start, end);
