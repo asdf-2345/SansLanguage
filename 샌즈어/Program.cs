@@ -17,11 +17,11 @@ namespace 샌즈어
 	//	참고로('변수이름')
 	//	참고로('변수이름')
 	
-	//만들예정인거
-	
 	//변수
 	//	정수형 - 샌즈의 공격은 '변수이름'당 '정수'이 답니다
 	//	문자열 - 샌즈는 '문자열'한 '변수이름'공격을 가지고 있습니다
+	
+	//만들예정인거
 	
 	//조건문
 	//	하지만 잠이 들었을때 창을 옮겨서 (변수1,변수2)을 시도하고 1차공격은
@@ -50,13 +50,15 @@ namespace 샌즈어
 		//테스트용
 		static string[] lines = {"참고로(\"피하지만\")습니다",
 								 "참고로(\"샌즈 아시는구나\")습니다",
-								 "하지만 잠이 들었을때 창을 옮겨서 ()을 시도하고 1차공격은",
+								 "참고로(\"샌즈 아시는구나\")습니다",
+								 "샌즈는 123한 테스트공격을 가지고 있습니다",
+								 "샌즈의 공격은 테스트2당 123이 답니다",
+								 "참고로(테스트)습니다",
+								 "참고로(테스트2)습니다",
+								 "하지만 잠이 들었을때 창을 옮겨서 (테스트,테스트2)을 시도하고 1차공격은",
 								 "{",
 								 "참고로(\"샌즈 아시는구나\")습니다",
-								 "}",
-								 "참고로(\"샌즈 아시는구나\")습니다",
-								 "샌즈는 테스트문자열한 테스트공격을 가지고 있습니다",
-								 "참고로(테스트)습니다"};
+								 "}",};
 		public static Hashtable intHt = new Hashtable();
 		public static Hashtable strHt = new Hashtable();
 			
@@ -163,8 +165,45 @@ namespace 샌즈어
 			
 		}
 		
-		static bool condition(string line){
-			return false;
+		static bool condition(string line){ // 하지만 잠이 들었을때 창을 옮겨서 (변수1,변수2)을 시도하고 1차공격은
+			int start = line.IndexOf("하지만 잠이 들었을때 창을 옮겨서 (") + 20;
+			int end = (line.IndexOf(",")) - start;
+			string var1Name = line.Substring(start, end);
+			Console.WriteLine(var1Name);
+			
+			start = line.IndexOf(",") + 1;
+			end = (line.LastIndexOf(")을 시도하고 1차공격은")) - start;
+			string var2Name = line.Substring(start, end);
+			Console.WriteLine(var2Name);
+			
+			string var1 = "";
+			if(strHt[var1Name] != null){
+				var1 = strHt[var1Name].ToString();
+			}
+			else if(intHt[var1Name] != null){
+				var1 = intHt[var1Name].ToString();
+			}
+			else{
+				Console.WriteLine(var1Name + " 라는 이름의 변수를 찾을 수 없습니다.");
+			}
+			
+			string var2 = "";
+			if(strHt[var2Name] != null){
+				var2 = strHt[var2Name].ToString();
+			}
+			else if(intHt[var2Name] != null){
+				var2 = intHt[var2Name].ToString();
+			}
+			else{
+				Console.WriteLine(var2Name + " 라는 이름의 변수를 찾을 수 없습니다.");
+			}
+			
+			if(var1 == var2){
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
 	}
 }
