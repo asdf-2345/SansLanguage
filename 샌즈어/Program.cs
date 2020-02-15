@@ -14,6 +14,8 @@ namespace 샌즈어
 	//출력
 	//  참고로("출력할 내용")
 	//  참고로("출력할 내용")습니다  (다음줄로 넘어감)
+	//	참고로('변수이름')
+	//	참고로('변수이름')
 	
 	//만들예정인거
 	
@@ -52,7 +54,9 @@ namespace 샌즈어
 								 "{",
 								 "참고로(\"샌즈 아시는구나\")습니다",
 								 "}",
-								 "참고로(\"샌즈 아시는구나\")습니다",};
+								 "참고로(\"샌즈 아시는구나\")습니다",
+								 "샌즈는 테스트문자열한 테스트공격을 가지고 있습니다",
+								 "참고로(테스트)습니다"};
 		public static Hashtable intHt = new Hashtable();
 		public static Hashtable strHt = new Hashtable();
 			
@@ -62,12 +66,15 @@ namespace 샌즈어
 			//lines = File.ReadAllLines(Console.ReadLine());
 			for(int a = 0; a < lines.Length; a++){
 				if(lines[a].Contains("참고로")){
+					bool linebreak = false;
+					bool isVar = false;
+					if(!(lines[a].Contains("\""))){
+						isVar = true;
+					}
 					if(lines[a].Contains("습니다")){
-						print(lines[a], true);
+						linebreak = true;
 					}
-					else{
-						print(lines[a]);
-					}
+					print(lines[a], linebreak, isVar);
 				}
 				else if(lines[a].Contains("하지만 잠이 들었을때 창을 옮겨서")){
 					bool judgment = condition(lines[a]);
@@ -78,7 +85,7 @@ namespace 샌즈어
 				else if(lines[a].Contains("샌즈의 공격은") && lines[a].Contains("이 답니다")){
 					intVariableDeclaration(lines[a]);
 				}
-				else if(lines[a].Contains("샌즈는") && lines[a].Contains(" 공격을 가지고 있습니다")){
+				else if(lines[a].Contains("샌즈는") && lines[a].Contains("공격을 가지고 있습니다")){
 					stringVariableDeclaration(lines[a]);
 				}
 				else if(lines[a].Contains("자신의 턴을") && lines[a].Contains("동안 유지한채로 잠에듭니다")){
@@ -100,12 +107,12 @@ namespace 샌즈어
 		}
 		
 		static void stringVariableDeclaration(string line){
-			int varNamePoint1 = line.IndexOf("샌즈는") + 3;
+			int varNamePoint1 = line.IndexOf("샌즈는 ") + 4;
 			int varNamePoint2 = line.LastIndexOf("한 ");
 			int varValuePoint1 = line.LastIndexOf("공격을 가지고 있습니다");
 			
-			string varName = line.Substring(varNamePoint1, varNamePoint2 - varNamePoint1);
-			string varValue = line.Substring(varNamePoint2 + 2, varValuePoint1 - (varNamePoint2 + 2));
+			string varName = line.Substring(varNamePoint2 + 2, varValuePoint1 - (varNamePoint2 + 2));
+			string varValue = line.Substring(varNamePoint1, varNamePoint2 - varNamePoint1);
 			
 			strHt[varName] = varValue;
 		}
@@ -121,11 +128,30 @@ namespace 샌즈어
 			return newPoint;
 		}
 		
-		static void print(string line, bool linebreak = false){
-			int start = line.IndexOf("참고로(\"") + 5;
-			int end = (line.IndexOf("\")")) - start;
-			string printStr  = line.Substring(start, end);
+		static void print(string line, bool linebreak, bool isVar){
+			int start = 0;
+			int end = 0;
+			string printStr = "";
 			
+			if(!isVar){
+				start = line.IndexOf("참고로(\"") + 5;
+				end = (line.IndexOf("\")")) - start;
+				printStr = line.Substring(start, end);
+			}
+			else{
+				start = line.IndexOf("참고로(") + 4;
+				end = (line.IndexOf(")")) - start;
+				string printVarName = line.Substring(start, end);
+				if(strHt[printVarName] != null){
+					printStr = strHt[printVarName].ToString();
+				}
+				else if(intHt[printVarName] != null){
+					printStr = intHt[printVarName].ToString();
+				}
+				else{
+					Console.WriteLine(printVarName + " 라는 이름의 변수를 찾을 수 없습니다.");
+				}
+			}
 			Console.Write(printStr);
 			
 			if(linebreak == true){
