@@ -23,7 +23,7 @@ namespace 샌즈어
 		public static void Main(string[] args)
 		{
 			Console.WriteLine("실행시킬 파일 위치를 입력해주세요.");
-			lines = File.ReadAllLines(Console.ReadLine());
+			lines = File.ReadAllLines(Console.ReadLine(),System.Text.Encoding.Default);
 			for(int a = 0; a < lines.Length; a++){
 				if(lines[a].Contains("참고로")){
 					bool linebreak = false;
