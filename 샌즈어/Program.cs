@@ -22,37 +22,53 @@ namespace 샌즈어
 		
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("실행시킬 파일 위치를 입력해주세요.");
-			lines = File.ReadAllLines(Console.ReadLine(),System.Text.Encoding.Default);
-			for(int a = 0; a < lines.Length; a++){
-				if(lines[a].Contains("참고로")){
+			Console.WriteLine("입력방식을 선택해주세요. \n직접입력 - 0\n파일업로드 - 0이 아닌 수");
+			string answer = Console.ReadLine();
+			if(answer != "0"){
+				Console.WriteLine("실행시킬 파일 위치를 입력해주세요.");
+				lines = File.ReadAllLines(Console.ReadLine(),System.Text.Encoding.Default);
+			}
+			string line = "";
+			int numberTimesRepeat = int.MaxValue;
+			if(answer != "0"){
+				numberTimesRepeat = lines.Length;
+			}
+			for(int a = 0; a < numberTimesRepeat; a++){
+				if(answer == "0"){
+					Console.Write("\n>>");
+					line = Console.ReadLine();
+				}
+				else{
+					line = lines[a];
+				}
+				if(line.Contains("참고로")){
 					bool linebreak = false;
 					bool isVar = false;
-					if(!(lines[a].Contains("\""))){
+					if(!(line.Contains("\""))){
 						isVar = true;
 					}
-					if(lines[a].Contains("습니다")){
+					if(line.Contains("습니다")){
 						linebreak = true;
 					}
-					print(lines[a], linebreak, isVar);
+					print(line, linebreak, isVar);
 				}
-				else if(lines[a].Contains("하지만 잠이 들었을때 창을 옮겨서")){
-					bool judgment = condition(lines[a]);
+				else if(line.Contains("하지만 잠이 들었을때 창을 옮겨서")){
+					bool judgment = condition(line);
 					if(!judgment){
 						a = lineOver(a);
 					}
 				}
-				else if(lines[a].Contains("샌즈의 공격은") && lines[a].Contains("이 답니다")){
-					intVariableDeclaration(lines[a]);
+				else if(line.Contains("샌즈의 공격은") && line.Contains("이 답니다")){
+					intVariableDeclaration(line);
 				}
-				else if(lines[a].Contains("샌즈는") && lines[a].Contains("공격을 가지고 있습니다")){
-					stringVariableDeclaration(lines[a]);
+				else if(line.Contains("샌즈는") && line.Contains("공격을 가지고 있습니다")){
+					stringVariableDeclaration(line);
 				}
-				else if(lines[a].Contains("자신의 턴을") && lines[a].Contains("동안 유지한채로 잠에듭니다")){
-					repetition(lines[a], a);
+				else if(line.Contains("자신의 턴을") && line.Contains("동안 유지한채로 잠에듭니다")){
+					repetition(line, a);
 				}
 				
-				if(lines[a].Contains("]") && numberOfRepetitions != 0){
+				if(line.Contains("]") && numberOfRepetitions != 0){
 					numberOfRepetitions--;
 					a = BackPoint;
 				}
@@ -154,12 +170,10 @@ namespace 샌즈어
 			int start = line.IndexOf("하지만 잠이 들었을때 창을 옮겨서 (") + 20;
 			int end = (line.IndexOf(",")) - start;
 			string var1Name = line.Substring(start, end);
-			Console.WriteLine(var1Name);
 			
 			start = line.IndexOf(",") + 1;
 			end = (line.LastIndexOf(")을 시도하고 1차공격은")) - start;
 			string var2Name = line.Substring(start, end);
-			Console.WriteLine(var2Name);
 			
 			string var1 = "";
 			if(strHt[var1Name] != null){
