@@ -47,7 +47,7 @@ namespace 샌즈어
 					if(!(line.Contains("\""))){
 						isVar = true;
 					}
-					if(line.Contains("습니다")){
+					if(line.Contains(")습니다")){
 						linebreak = true;
 					}
 					print(line, linebreak, isVar);
